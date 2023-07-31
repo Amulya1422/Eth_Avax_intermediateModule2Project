@@ -7,15 +7,15 @@ contract BankApp{
     
     function createAcc() public returns (bool)
     {
-        require(UserExists[msg.sender]==false,'User already Exists'); 
-        UserExists[msg.sender]=true; 
-        return true;
+        require(UserExists[msg.sender]==false,'User already Exists'); UserExists[msg.sender]=true; return true;
     }
+
 
     function accountExists() public view returns (bool)
     {
         return UserExists[msg.sender];
     }
+
 
     function deposit() public payable
     {
@@ -31,19 +31,31 @@ contract BankApp{
         // Now get that amount withdrawed //Amount withdrawed must be transfered payable(msg.sender).transfer(withdrawAmount);
     }
 
+
     //To check Account Balance in the contaract for a given address(i.e, who calls the contract i.e, msg.sender) 
     function accountBalance() public view returns(uint256)
     {
         return UserAccount[msg.sender];
     }
 
+
     //To transfer Ether amount to a particular given address & update the balance of the contract 
     function transferEther(address payable reciever, uint256 transferAmount) public payable{    
-        require((UserExists[reciever]== true)&&(UserExists[msg.sender]== true)&&(transferAmount>0)); 
-        require( transferAmount < UserAccount[msg.sender] );
+        require((UserExists[reciever]== true)&&(UserExists[msg.sender]== true)&&(transferAmount>0)); require( transferAmount < UserAccount[msg.sender] );
         UserAccount[msg.sender] = UserAccount[msg.sender] - transferAmount;
         UserAccount[reciever]+= transferAmount;
         //Amount withdrawed must be transfered 
         reciever.transfer(transferAmount);
+    }
+
+    function rateofInterest(uint256 principal) public payable returns (uint256)
+    {
+        uint total;
+        UserAccount[msg.sender]=UserAccount[msg.sender]-principal;
+        uint r=5;
+        uint t=2;
+        total=principal+((principal*r*t)/100);
+        return total;
+
     }
 }
