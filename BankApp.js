@@ -7,7 +7,7 @@ import Interactions from './Interactions';
 const BankApp = () => {
 
 	// deploy simple token contract and paste deployed contract address here. This value is local ganache chain
-	let contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+	let contractAddress = '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6';
 
 	const [errorMessage, setErrorMessage] = useState(null);
 	const [defaultAccount, setDefaultAccount] = useState(null);
@@ -106,11 +106,18 @@ const BankApp = () => {
 		let txt= await contract.withdraw(withdrawAmount);
 		console.log(txt);
 	}
+	const RateofInterest = async (e)=>{
+		e.preventDefault();
+		let principal=e.target.principalAmount.value;
+		let txt = await contract.rateofInterest(principal);
+		let totalAmount = txt.toNumber();
+		console.log(totalAmount);
+	}
 
 
 	return (
 	<div >
-		<h1> ----------------AmulyaBankDapp----------------- </h1>
+		<h2>  Amulya Bank Dapp </h2>
 		<button className={styles.button6} onClick={connectWalletHandler}>{connButtonText}</button>
 
 		<div className={styles.walletCard}>
@@ -159,6 +166,20 @@ const BankApp = () => {
 						<button type='submit' className={styles.button6}>Withdraw</button>
 
 			</form>
+		</div>
+
+		<div>
+			<form onSubmit={RateofInterest}>
+				<h2>Enter your principal Amount</h2>
+					<p>Principal Ammount</p>
+					<input type='number' id='principalAmount' min='0' step='1'/>
+					<button type='submit' className={styles.button6}>Principal</button>
+					<div>
+						{((accbalance*11)/10)}
+					</div>
+			</form>
+			
+			
 		</div>
 
 	</div>
